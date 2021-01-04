@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 
-
+#外链
 class Link(models.Model):
     STATUS_NORMAL = 1
     STATUS_DELETE = 0
@@ -23,10 +23,13 @@ class Link(models.Model):
     owner = models.ForeignKey(User,verbose_name="作者",on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         verbose_name = verbose_name_plural = "友链"
 
-
+#侧栏
 class SideBar(models.Model):
     STATUS_SHOW = 1
     STATUS_HIDE = 0
@@ -55,6 +58,8 @@ class SideBar(models.Model):
     owner = models.ForeignKey(User,verbose_name="作者",on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True,
                                         verbose_name="创建时间")
+    def __str__(self):
+        return self.title;
 
     class Meta:
         verbose_name = verbose_name_plural = "侧边栏"

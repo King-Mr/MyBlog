@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
-
+#类别
 class Category(models.Model):
     STATUS_NORMAL = 1
     STATUS_DELETE = 0
@@ -16,10 +16,15 @@ class Category(models.Model):
     is_nav = models.BooleanField(default=False,verbose_name="是否为导航")
     owner = models.ForeignKey(User,verbose_name="作者",on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
+
+    def __str__(self):
+        return self.name
+
+
     class Meta:
         verbose_name = verbose_name_plural = '分类'
 
-
+#标签
 class Tag(models.Model):
     STATUS_NORMAL = 1
     STATUS_DELETE = 0
@@ -34,12 +39,15 @@ class Tag(models.Model):
     owner = models.ForeignKey(User,verbose_name="作者",on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = verbose_name_plural = '标签'
 
 
 
-
+#文章
 class Post(models.Model):
     STATUS_NORMAL = 1
     STATUS_DELETE = 0
@@ -58,7 +66,10 @@ class Post(models.Model):
     category = models.ForeignKey(Category,verbose_name="分类",on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag,verbose_name="标签",on_delete=models.CASCADE)
     owner = models.ForeignKey(User,verbose_name="作者",on_delete=models.CASCADE)
-    create_time = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
+    created_time = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         verbose_name = verbose_name_plural = "文章"

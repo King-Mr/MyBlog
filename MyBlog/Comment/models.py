@@ -2,7 +2,7 @@ from django.db import models
 from Blog.models import Post
 # Create your models here.
 
-
+#评论
 class Comment(models.Model):
     STATUS_NORMAL = 1
     STATUS_DELETE = 0
