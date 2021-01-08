@@ -3,4 +3,4 @@ from django.http import HttpResponse
 # Create your views here.
 
 def links(request):
-    return render(request,'Template/Config/list.html',context={'name':'links'})
+    return render(request,'Template/default/Config/list.html',context={'name':'links'})

@@ -5,6 +5,7 @@ from Blog.models import Post,Category,Tag
 from Config.models import Link,SideBar
 from Comment.models import Comment
 from django.views.generic import ListView,DetailView
+from MyBlog.package.base import *
 # Create your views here.
 
 '''
@@ -54,12 +55,13 @@ class CommonViewMixin():
 
 #多重继承的父类顺序决定了引用属性或函数搜索的顺序
 #比如两个父类都定义了get_context_data，调用这个函数的时候就会先从第一个父类中搜索，再去搜索第二个父类
-#如果继承的顺序是(ListView，CommonViewMixin)，那么调用的时候就会调用ListView的CommonViewMixin函数。而不会调用第二个父类。
+#如果继承的顺序是(ListView，CommonViewMixin)，那么调用的时候就会调用ListView的get_context_data函数。而不会调用第二个父类。
 class IndexView(CommonViewMixin,ListView):
     queryset = Post.latest_posts()
     paginate_by = 5
     context_object_name = 'post_list'
-    template_name = 'Template/Blog/list.html'
+    template_name = 'Template/default/Blog/list.html'
+    print(TEMPLATES)
 
 
 
@@ -94,6 +96,6 @@ class TagView(IndexView):
 
 class PostDetailView(CommonViewMixin,DetailView):
     queryset = Post.latest_posts()
-    template_name = 'Template/Blog/detail.html'
+    template_name = 'Template/default/Blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'

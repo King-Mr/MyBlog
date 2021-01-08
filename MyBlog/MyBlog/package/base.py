@@ -30,18 +30,18 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
+#静态文件所在的APP目录必须在INSTALLED_APPS中
 INSTALLED_APPS = [
     'MyBlog',
     'Blog',
     'Config',
     'Comment',
+    'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +127,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+

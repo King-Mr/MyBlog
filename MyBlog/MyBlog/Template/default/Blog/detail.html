@@ -1,0 +1,25 @@
+{% extends "Template/default/Blog/base.html" %}
+{% block title %} {{post.title}} {% endblock %}
+{% block jumbotron %} {% endblock %}
+{% block main %}
+
+<div class="card post">
+    <h1 class="text-center">
+         {{ post.title }}
+    </h1>
+    <div class="col px-0">
+        <span class="date text-grey">分类:{{ post.category.name }}</span>
+    </div>
+    <div class="col px-0 text-right">
+        <span class="date text-grey">作者:{{ post.owner.username }}</span>
+    </div>
+    <br>
+
+
+
+<hr/>
+
+<p>{{ post.content }}</p>
+
+</div>
+{% endblock %}
