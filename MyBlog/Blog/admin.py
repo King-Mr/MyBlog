@@ -19,7 +19,7 @@ class PostInline(admin.TabularInline):
 @admin.register(Category)
 class CategoryAdmin(BaseOwnerAdmin):
     list_display = ('name','status','is_nav','owner','created_time')
-    fields = ('name','status','is_nav')
+    fields = ('name','status','is_nav','color')
     inlines = [PostInline]
     def post_count(self,obj):
         return obj.post_set.count()
@@ -48,11 +48,11 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
             return queryset.filter(category_id=category_id)
         return queryset
 
-@admin.register(Post,site=custom_site)
+@admin.register(Post)
 class PostAdmin(BaseOwnerAdmin):
     list_display = ('title','category','status','created_time','owner','operator')
     list_display_links = ()
-    #form = PostAdminForm
+    form = PostAdminForm
     list_filter = [CategoryOwnerFilter]
     search_fields = ['title','category_name']
 
@@ -72,12 +72,18 @@ class PostAdmin(BaseOwnerAdmin):
         ('额外信息',{'classes':('collapse',),'fields':('tag',)
                  })
     )
+    def get_queryset(self, request):
+        qs = super(BaseOwnerAdmin, self).get_queryset(request)
+        return qs.filter(owner=request.user)
 
+    def save_model(self, request, obj, form, change):
+        obj.owner = request.user
+        return super(BaseOwnerAdmin, self).save_model(request,obj,form,change)
 
     def operator(self,obj):
         return format_html(
             '<a href="{}">编辑</a>',
-            reverse('cus_admin:Blog_post_change',args=(obj.id,))
+            reverse('admin:Blog_post_change',args=(obj.id,))
         )
     operator.short_description = '操作'
 
@@ -91,6 +97,6 @@ class CategoryAdmin(admin.ModelAdmin):
     inlines = [PostInline]
 
 
-@admin.register(LogEntry,site=custom_site)
+@admin.register(LogEntry)
 class LogEntryAdmin(admin.ModelAdmin):
     list_display = ['object_repr','object_id','action_flag','user','change_message']

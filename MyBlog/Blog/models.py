@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+import mistune
 
 # Create your models here.
 #类别
@@ -16,6 +17,7 @@ class Category(models.Model):
     is_nav = models.BooleanField(default=False,verbose_name="是否为导航")
     owner = models.ForeignKey(User,verbose_name="作者",on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
+    color = models.CharField(max_length=10,default="#000000",verbose_name='颜色')
 
     def __str__(self):
         return self.name
@@ -77,6 +79,7 @@ class Post(models.Model):
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
                                          choices=STATUS_ITEMS,
                                          verbose_name="状态")
+    content_html = models.TextField(verbose_name='正文html代码',blank=True,editable=False)
     category = models.ForeignKey(Category,verbose_name="分类",on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag,verbose_name="标签",on_delete=models.CASCADE)
     owner = models.ForeignKey(User,verbose_name="作者",on_delete=models.CASCADE)
@@ -84,6 +87,10 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self,*args,**kwargs):
+        self.content_html = mistune.markdown(self.content)
+        super().save(*args,**kwargs)
 
     @staticmethod
     def get_by_tag(tag_id):
