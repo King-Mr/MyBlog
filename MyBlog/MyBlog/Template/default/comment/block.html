@@ -1,0 +1,42 @@
+{% load static %}
+<hr/>
+<div class="comment" style="margin-top:50px">
+    <h4 style="Font:20px Poppins;margin:10px 0px;">{{ comment_count }} 条留言</h4>
+    <!--评论列表 -->
+    <ul style="list-style:none;padding:0px 0px 0px 0px;">
+        {% for comment in comment_list %}
+        <li >
+            <header class="comment info" >
+                <img src="https://secure.gravatar.com/avatar/ed25a5109139b3bd1f8de792a5e60d20?s=80&d=mm&r=g" width="80" height="80" alt="头像" style="max-width: 100%;border-radius: 40px;float:left;margin:0px 20px 0px 0px;">
+                <span class="comment-author-name" style="display:block;margin-bottom:20px;padding-top:10px;">
+                    <font style="Font:14px Poppins;Color:#000000;"><b>{{ comment.nickname }}</b></font>
+                </span>
+                <span style="display:block;margin-bottom:30px;margin-top:20px;">
+                    <time datetime="{{ comment.created_time }}">
+                        <font style="Font:12px Poppins;Color:#777777;">{{ comment.created_time }}</font>
+                    </time>
+                </span>
+            </header>
+            <div class="comment-content" style="float:none;">
+                {% autoescape off %}
+                {{ comment.content }}
+                {% endautoescape %}
+            </div>
+        </li>
+        <hr/>
+        {% endfor %}
+    </ul>
+    <h3 style="font:20px Poppins;">发表评论</h3>
+    <form class="form-group" action="/comment/" method="POST">
+        {% csrf_token %}
+        <input name="target" type="hidden" value="{{ target }}"/>
+        {{comment_form}}
+
+        <span  style="border-radius: 5px;background-color:#000;margin:0px 5px 0px 0px;padding:5px 11px 6px;">
+            <input type="submit" value="发表评论" style="background-color:#000;color:#ffffff;font:12px Poppins">
+        </span>
+        <br>
+        <br>
+    </form>
+
+</div>

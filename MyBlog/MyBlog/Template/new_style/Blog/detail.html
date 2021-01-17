@@ -1,0 +1,27 @@
+{% extends "Template/new_style/Blog/base.html" %}
+{% load comment_block %}
+{% block title %} {{post.title}} {% endblock %}
+{% block jumbotron %} {% endblock %}
+{% block main %}
+
+<div >
+    <div class="title_info" >
+        <div class="category">
+            <span  style="border-radius: 5px;background-color:{{ post.category.color }};margin:0px 5px 0px 0px;padding:5px 11px 4px;">
+                <a style="color:#ffffff;font:12px Poppins" href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a>
+            </span>
+        </div>
+        <h1 style="text-decoration: none;Color:#000;font:40px Poppins">{{ post.title }}</h1>
+        <span class="card-link" style="Color:#000;Font:12px Poppins">作者：<a href="{% url 'user-list' post.owner.id %}" style="Color:#000;Font:12px Poppins">{{ post.owner }}</a> </span>
+
+    </div>
+
+
+<hr/>
+{% autoescape off %}
+{{ post.content }}
+{% endautoescape %}
+
+{% comment_block request.path %}
+{% endblock %}
+</div>

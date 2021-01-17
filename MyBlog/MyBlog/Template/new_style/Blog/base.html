@@ -1,0 +1,49 @@
+{% load static %}
+<html style="height:100%;">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta charset="utf-8">
+
+        <link rel="stylesheet" type="text/css" href="{% static 'default/css/bootstrap.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'new_style/mycss.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'default/css/enlighterjs.min.css' %}">
+        <script src="{% static 'default/css/enlighterjs.min.js' %}"></script>
+        <script src="{% static 'new_style/myjs.js' %}"></script>
+    </head>
+    <body style="height:100%;">
+        <div class="container-fluid head" style="height:100%;">
+            <div class=" nav" style="background-color:#111;height:100%;width:250px;position:fixed;">
+                    <div class="container" style="width:250px;">
+                        <div  style="margin-top:60px!important;margin-bottom:60px!important;">
+                            <a href="/">
+                                <img class="icon" src="{% static 'new_style/canacmini.png' %}">
+                            </a>
+                        </div>
+
+                        <form class="search" style="" action="{% url 'search-list' %}">
+                            <input class="search" type="search" placeholder="Search" aria-label="Search" name="search_key">
+                        </form>
+                        <a class="nav-link" href="/" style="color:#cacaca;font-family:Poppins !important" >
+                            <p style="color:#8c1c1c;display:inline;">-</p>首页
+                        </a>
+                        {% for nav in navs %}
+                        <a class="nav-link" href="{% url 'category-list' nav.id %}" style="color:#cacaca;font-family:Poppins !important" >
+                            <p style="color:{{ nav.color }};display:inline;">-</p>{{ nav.name }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            <div class="main" style="width:calc(100% - 250px);float:right;">
+                <div class="post-detail" style="margin-left:80px!important;margin-right:80px!important;margin-top:100px!important;">
+                    {% block main %}
+                    {% endblock %}
+                    <script type="text/javascript">EnlighterJS.init('pre', 'code', {
+                        language : 'c++',
+                         theme: 'enlighter',
+                        indent : 2})
+                    </script>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

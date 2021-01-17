@@ -6,6 +6,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
         <link rel="stylesheet" type="text/css" href="{% static 'default/css/bootstrap.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'default/css/enlighterjs.min.css' %}">
+        <script src="{% static 'default/css/enlighterjs.min.js' %}"></script>
         <style>
             .post{margin-bottom:5px};
         </style>
@@ -66,6 +68,11 @@
                     <span class="text-muted">Power by King</span>
                 </div>
                 {% endblock %}
+                <script type="text/javascript">EnlighterJS.init('pre', 'code', {
+                language : 'c++',
+                theme: 'enlighter',
+                indent : 2})
+                </script>
             </footer>
         </div>
     </body>

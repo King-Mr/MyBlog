@@ -3,10 +3,11 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
 from Blog.models import Post,Category,Tag
 from Config.models import Link,SideBar
+from Comment.forms import CommentForm
 from Comment.models import Comment
 from django.views.generic import ListView,DetailView
 from django.db.models import Q
-
+from MyBlog.package.base import MEDIA_ROOT
 # Create your views here.
 
 '''
@@ -62,7 +63,6 @@ class CommonViewMixin():
 #如果继承的顺序是(ListView，CommonViewMixin)，那么调用的时候就会调用ListView的get_context_data函数。而不会调用第二个父类。
 class IndexView(CommonViewMixin,ListView):#首页
     queryset = Post.latest_posts()
-    paginate_by = 5
     context_object_name = 'post_list'
     template_name = 'Template/default/Blog/list.html'
 
@@ -105,10 +105,20 @@ class TagView(IndexView):   #标签过滤页面
 #DetailView类中的get_object函数会通过url中的参数直接在querryset中获取对象，所以就不需要再配置queryset中过滤对象
 class PostDetailView(CommonViewMixin,DetailView):
     queryset = Post.latest_posts()
-    template_name = 'Template/default/Blog/detail.html'
+    template_name = 'Template/new_style/Blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
 
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        comment_list = Comment.get_by_target(self.request.path)
+        count = comment_list.count()
+        context.update({
+            'comment_form':CommentForm,
+            'comment_list':comment_list,
+        })
+        print(context)
+        return context
 
 
 
