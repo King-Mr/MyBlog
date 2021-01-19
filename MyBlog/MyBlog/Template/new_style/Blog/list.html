@@ -1,0 +1,39 @@
+{% extends "Template/new_style/Blog/base.html" %}
+{% block title %}博客主页{% endblock %}
+{% block main %}
+{% for post in post_list %}
+<div class="card post" style="margin-bottom:40px!important;">
+    <div class="card-body">
+        <div >
+            <span style="border-radius: 5px;background-color:{{ post.category.color }};margin:0px 5px 0px 0px;padding:5px 11px 4px;">
+                <a style="color:#ffffff;font:12px Poppins" href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a>
+            </span>
+        </div>
+        <h3 class="hover"><a class="title-link" href="{% url 'post-detail' post.id %}" style="text-decoration: none;">{{ post.title }}</a></h3>
+        <div style="margin-bottom: 15px;overflow:hidden;padding-bottom: 15px;">
+                    <p class="card-text" style="line-height: 1.67;text-overflow:ellipsis;Color:#555555;Font:15px Roboto">{{ post.desc }} </p>
+        </div>
+        <span  style="Color:#555555;Font:12px Poppins;margin:0px 5px;">
+            <i class="fa fa-user"></i>
+            <a href="{% url 'user-list' post.owner.id %}" style="Color:#555555;Font:12px Poppins">{{ post.owner }}</a>
+        </span>
+        <span  style="Color:#555555;Font:12px Poppins;margin:0px 5px;">
+            <i class="fa fa-clock-o"></i>{{ post.created_time }}
+        </span>
+        <span  style="Color:#555555;Font:12px Poppins;margin:0px 5px;">
+            <i class="fa fa-eye"></i>{{ post.pv }}
+        </span>
+
+    </div>
+</div>
+{% endfor %}
+{% if page_obj %}
+{% if page_obj.has_previous %}
+<a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+{% endif %}
+page {{ page_obj.number }} of {{paginator.num_pages }}.
+{% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}">下一页</a>
+{% endif %}
+{% endif %}
+{% endblock %}

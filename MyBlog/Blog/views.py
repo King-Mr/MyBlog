@@ -1,3 +1,4 @@
+from datetime import date
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
@@ -6,42 +7,11 @@ from Config.models import Link,SideBar
 from Comment.forms import CommentForm
 from Comment.models import Comment
 from django.views.generic import ListView,DetailView
-from django.db.models import Q
+from django.db.models import Q,F
 from MyBlog.package.base import MEDIA_ROOT
+from django.core.cache import cache
 # Create your views here.
 
-'''
-def post_list(request,category_id=None,tag_id=None):
-    tag=None
-    category = None
-    if tag_id:
-        post_list,tag = Post.get_by_tag(tag_id)
-    elif category_id:
-        post_list,category = Post.get_by_category(category_id)
-    else:
-        post_list = Post.latest_posts()
-    context ={
-        'category':category,
-        'tag':tag,
-        'post_list':post_list,
-        'sidebars':SideBar.get_all()
-    }
-    context.update(Category.get_navs())
-    return render(request,'Template/Blog/list.html',context=context)
-
-
-
-
-def post_detail(request,post_id=None):
-    try:
-        post=Post.objects.get(id=post_id)
-    except Post.DoesNotExist:
-        post = None
-    context = {
-        'post':post,
-    }
-    context.update(Category.get_navs())
-    return render(request,'Template/Blog/detail.html',context=context)'''
 
 #提供get_context_data的一个基类，它的子类会同时继承与其他有get_context_data的类
 #context = super().get_context_data(**kwargs)这就是调用它子类的父类的这个方法，用来获取源数据
@@ -64,7 +34,7 @@ class CommonViewMixin():
 class IndexView(CommonViewMixin,ListView):#首页
     queryset = Post.latest_posts()
     context_object_name = 'post_list'
-    template_name = 'Template/default/Blog/list.html'
+    template_name = 'Template/new_style/Blog/list.html'
 
 
 
@@ -105,19 +75,43 @@ class TagView(IndexView):   #标签过滤页面
 #DetailView类中的get_object函数会通过url中的参数直接在querryset中获取对象，所以就不需要再配置queryset中过滤对象
 class PostDetailView(CommonViewMixin,DetailView):
     queryset = Post.latest_posts()
-    template_name = 'Template/default/Blog/detail.html'
+    template_name = 'Template/new_style/Blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
 
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
+        comment_list = Comment.get_by_target(self.request.path)
+        count = comment_list.count()
         context.update({
             'comment_form':CommentForm,
-            'comment_list':Comment.get_by_target(self.request.path)
+            'comment_list':comment_list,
+            'comment_count':count,
         })
-        print(MEDIA_ROOT,1)
+        print(context)
         return context
 
+    def get(self,request,*args,**kwargs):
+        response = super().get(request,*args,**kwargs)
+        self.handle_visited()
+        return response
+
+    def handle_visited(self):
+        increase_pv = False
+        increase_uv = False
+        uid = self.request.uid
+        pv_key = 'pv:%s:%s' % (uid,self.request.path)
+        uv_key = 'uv"%s:%s:%s' % (uid,str(date.today()),self.request.path)
+        if not cache.get(pv_key):
+            increase_pv = True
+            cache.set(pv_key,1,1*60)
+
+        if increase_pv and increase_uv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv')+1,uv=F('uv')+1)
+        elif increase_pv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv')+1)
+        elif increase_uv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('uv') + 1)
 
 
 class OwnerView(IndexView):

@@ -3,14 +3,15 @@ from .models import Comment
 import mistune
 
 class CommentForm(forms.ModelForm):
-    nickname = forms.CharField(label='昵称',max_length=50,
-                            widget=forms.widgets.Input(attrs={'class':'form-control','style':'width:60%;'}))
-    email = forms.CharField(label='Email', max_length=50,
-                            widget=forms.widgets.EmailInput(attrs={'class': 'form-control', 'style': 'width:60%;'}))
-    website = forms.CharField(label='网站', max_length=100,
-                              widget=forms.widgets.URLInput(attrs={'class': 'form-control', 'style': 'width:60%;'}))
-    content = forms.CharField(label='内容', max_length=500,
-                              widget=forms.widgets.Textarea(attrs={'rows': 6, 'cols': 60, 'class': 'form-control','style':'resize:none;'}))
+    content = forms.CharField(label='', max_length=500,
+                              widget=forms.widgets.Textarea(attrs={'rows': 6, 'cols': 60,'placeholder':'评论', 'class': 'form-control','style':'resize:none;margin-bottom:40px;'}))
+    nickname = forms.CharField(label='',max_length=50,
+                            widget=forms.widgets.Input(attrs={'class':'form-control','placeholder':'Name','style':'width:30%;float:left;margin-bottom:40px;'}))
+    email = forms.CharField(label='', max_length=50,
+                            widget=forms.widgets.EmailInput(attrs={'class': 'form-control','placeholder':'Email', 'style': 'width:30%;float:left;margin-left:calc(5%);margin-bottom:40px;'}))
+    website = forms.CharField(label='', max_length=100,
+                              widget=forms.widgets.URLInput(attrs={'class': 'form-control','placeholder':'网址', 'style': 'width:30%;float:left;margin-left:calc(5%);margin-bottom:40px;'}))
+
 
     def clean_content(self):
         content = self.cleaned_data.get('content')
@@ -21,5 +22,5 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ['nickname','email','website','content']
+        fields = ['content','nickname','email','website']
 

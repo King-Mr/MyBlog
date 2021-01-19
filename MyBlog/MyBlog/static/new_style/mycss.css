@@ -1,4 +1,4 @@
-img{
+.icon{
     width:auto;
     height: 50px;
     vertical-align:middle;
@@ -14,15 +14,20 @@ input{
 .title-link {
     width: 500px;
     height: 500px;
+    Color:#000;
     -webkit-transition: all 0.5s linear;
     -moz-transition: all 0.5s linear;
     -o-transition: all 0.5s linear;
     transition: all 0.5s linear;
 }
-.title-link:hover, .title-link:focus, .title-link:active {
+.title-link:hover, .hover:focus, .hover:active {
     -webkit-transition: all 0.5s linear;
     -moz-transition: all 0.5s linear;
     -o-transition: all 0.5s linear;
     transition: all 0.5s linear;
-    Color:#007bff;
+   Color:Blue;
+}
+
+a{
+    text-decoration: none;
 }
