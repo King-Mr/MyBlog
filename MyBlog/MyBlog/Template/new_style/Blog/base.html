@@ -16,23 +16,31 @@
         <div style="height:100%;">
             <div class=" nav" style="background-color:#111;height:100%;width:250px;position:fixed;">
                     <div class="container" style="width:250px;">
-                        <div  style="margin-top:60px!important;margin-bottom:60px!important;">
+                        <div  style="margin-top:30px!important;margin-bottom:30px!important;">
                             <a href="/">
-                                <img class="icon" src="{% static 'new_style/canacmini.png' %}">
+                                <img class="icon" src="{% static 'logo/logo.png' %}">
                             </a>
                         </div>
-
-                        <form class="search" style="" action="{% url 'search-list' %}">
-                            <input class="search" type="search" placeholder="Search" aria-label="Search" name="search_key">
-                        </form>
-                        <a class="nav-link" href="/" style="color:#cacaca;font-family:Poppins !important" >
-                            <p style="color:#8c1c1c;display:inline;">-</p>首页
-                        </a>
-                        {% for nav in navs %}
-                        <a class="nav-link" href="{% url 'category-list' nav.id %}" style="color:#cacaca;font-family:Poppins !important" >
-                            <p style="color:{{ nav.color }};display:inline;">-</p>{{ nav.name }}
-                        </a>
-                        {% endfor %}
+                        <div class="nav_list">
+                            <form class="search" style="margin-left:15px;" action="{% url 'search-list' %}">
+                                <input class="search" type="search" placeholder="Search" aria-label="Search" name="search_key">
+                            </form>
+                            <a class="nav-link" href="/" style="color:#cacaca;font-family:Poppins !important" >
+                                <p style="color:#5a5a5a;margin-right:10px;display:inline;">-</p>首页
+                            </a>
+                            {% for nav in navs %}
+                            <a class="nav-link" href="{% url 'category-list' nav.id %}" style="color:#cacaca;font-family:Poppins !important" >
+                                <p style="margin-right:10px;color:{{ nav.color }};display:inline;">-</p>{{ nav.name }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <div class="FirendLink" style="margin-top:60px;">
+                            {% for link in friend_links %}
+                            <a class="nav-link" href="{{ link.href }}" style="color:#cacaca;font-family:Poppins !important" >
+                                <i class="{{ link.icon }}"></i><p style="color:#cacaca;margin:0px 0px 20px 10px;display:inline;font:12px Roboto">{{ link.title }}</p>
+                            </a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             <div class="main" style="width:calc(100% - 250px);float:right;">

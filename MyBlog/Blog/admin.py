@@ -5,32 +5,25 @@ from MyBlog.custom_site import custom_site
 from MyBlog.base_admin import BaseOwnerAdmin
 from django.contrib.admin.models import LogEntry
 
-from .models import Post,Category,Tag
+from .models import Post,Category
 from .adminforms import PostAdminForm
 # Register your models here.
 
 
 
-class PostInline(admin.TabularInline):
-    fields = ('title','desc')
-    extra = 1
-    model = Post
+
 
 @admin.register(Category)
 class CategoryAdmin(BaseOwnerAdmin):
     list_display = ('name','status','is_nav','owner','created_time')
     fields = ('name','status','is_nav','color')
-    inlines = [PostInline]
+
     def post_count(self,obj):
         return obj.post_set.count()
 
     post_count.short_description = '文章数量'
 
 
-@admin.register(Tag)
-class TagAdmin(BaseOwnerAdmin):
-    list_display = ('name','status','created_time')
-    fields = ('name','status')
 
 
 
@@ -50,7 +43,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
 
 @admin.register(Post)
 class PostAdmin(BaseOwnerAdmin):
-    list_display = ('title','category','status','created_time','owner','operator')
+    list_display = ('title','status','created_time','owner','operator')
     list_display_links = ()
     form = PostAdminForm
     list_filter = [CategoryOwnerFilter]
@@ -69,8 +62,6 @@ class PostAdmin(BaseOwnerAdmin):
                 'status')
                 }),
         ('内容',{'fields':('desc','content',),}),
-        ('额外信息',{'classes':('collapse',),'fields':('tag',)
-                 })
     )
     def get_queryset(self, request):
         qs = super(BaseOwnerAdmin, self).get_queryset(request)
@@ -93,8 +84,7 @@ class PostAdmin(BaseOwnerAdmin):
 
 
 
-class CategoryAdmin(admin.ModelAdmin):
-    inlines = [PostInline]
+
 
 
 @admin.register(LogEntry)

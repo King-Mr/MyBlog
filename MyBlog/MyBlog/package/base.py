@@ -87,9 +87,9 @@ WSGI_APPLICATION = 'MyBlog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test',
+        'NAME': 'Blog',
         'USER':'root',
-        'PASSWORD':'123456',
+        'PASSWORD':'5265210.Z.z.',
         'HOST':'localhost',
         'PORT':'3306',
     }
@@ -158,6 +158,7 @@ CKEDITOR_CONFIGS = {
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR,"media")
+STATIC_ROOT = os.path.join(BASE_DIR,"staticfile")
 CKEDITOR_UPLOAD_PATH = "article_images/"
 
 #设置响应头的X-Frame-Option为SAMEORIGIN，不然上传图片后不能正常显示

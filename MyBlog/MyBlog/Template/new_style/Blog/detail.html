@@ -7,9 +7,11 @@
 <div >
     <div class="title_info" >
         <div class="category">
-            <span  style="border-radius: 5px;background-color:{{ post.category.color }};margin:0px 5px 0px 0px;padding:5px 11px 4px;">
-                <a style="color:#ffffff;font:12px Poppins" href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a>
+            {% for cate in post.category.all %}
+            <span style="text-align: center;border-radius: 5px;background-color:{{ cate.color }};margin:0px 5px 0px 0px;padding:5px 11px 4px;">
+                <a style="color:#ffffff;font:12px Poppins" href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
             </span>
+            {% endfor %}
         </div>
         <h1 style="text-decoration: none;Color:#000;font:40px Poppins">{{ post.title }}</h1>
         <span  style="Color:#555555;Font:12px Poppins;margin:0px 5px;">

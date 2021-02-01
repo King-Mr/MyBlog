@@ -6,7 +6,7 @@ from .models import Link,SideBar
 @admin.register(Link)
 class LinkAdmin(admin.ModelAdmin):
     list_display = ('title','href','status','weight','created_time')
-    fields = ('title','href','status','weight')
+    fields = ('title','href','icon','status','weight')
 
     def save_model(self, request, obj, form, change):
         obj.owner = request.user

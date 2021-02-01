@@ -15,6 +15,7 @@ class Link(models.Model):
     href = models.URLField(verbose_name="链接") #默认长度为200
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
                                          choices=STATUS_ITEMS,verbose_name="状态")
+    icon = models.CharField(max_length=50,verbose_name="图标",default="")
     weight = models.PositiveIntegerField(default=1,
                                          choices=zip(range(1,6),range(1,6)),
                                          verbose_name="权重",

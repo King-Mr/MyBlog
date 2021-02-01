@@ -5,9 +5,11 @@
 <div class="card post" style="margin-bottom:40px!important;">
     <div class="card-body">
         <div >
-            <span style="border-radius: 5px;background-color:{{ post.category.color }};margin:0px 5px 0px 0px;padding:5px 11px 4px;">
-                <a style="color:#ffffff;font:12px Poppins" href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a>
+            {% for cate in post.category.all %}
+            <span style="text-align: center;border-radius: 5px;background-color:{{ cate.color }};margin:0px 5px 0px 0px;padding:5px 11px 4px;">
+                <a style="color:#ffffff;font:12px Poppins" href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
             </span>
+            {% endfor %}
         </div>
         <h3 class="hover"><a class="title-link" href="{% url 'post-detail' post.id %}" style="text-decoration: none;">{{ post.title }}</a></h3>
         <div style="margin-bottom: 15px;overflow:hidden;padding-bottom: 15px;">

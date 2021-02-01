@@ -2,7 +2,7 @@ from datetime import date
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect,HttpResponse
-from Blog.models import Post,Category,Tag
+from Blog.models import Post,Category
 from Config.models import Link,SideBar
 from Comment.forms import CommentForm
 from Comment.models import Comment
@@ -22,6 +22,9 @@ class CommonViewMixin():
         context = super().get_context_data(**kwargs)#获取文章数据，page数据
         context.update(                             #添加侧边栏数据
             {'sidebars':SideBar.get_all()}
+        )
+        context.update(
+            {'friend_links': Link.objects.all()}
         )
         context.update(                             #添加类别数据
             Category.get_navs()
@@ -51,9 +54,9 @@ class CategoryView(IndexView):  #分类页面
         )
         return context
     def get_queryset(self):#这个函数获取当前页面需要的数据，并且过滤掉不需要的数据
-        queryset = super().get_queryset()
         category_id = self.kwargs.get('category_id')
-        return queryset.filter(category_id=category_id)
+        category = Category.objects.all().get(id=category_id)
+        return category.post_set.all().filter(status=1)
 
 
 
@@ -88,7 +91,6 @@ class PostDetailView(CommonViewMixin,DetailView):
             'comment_list':comment_list,
             'comment_count':count,
         })
-        print(context)
         return context
 
     def get(self,request,*args,**kwargs):
