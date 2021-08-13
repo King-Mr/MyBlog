@@ -1,22 +1,20 @@
-{% extends "Template/default/Blog/base.html" %}
-{% block title %}友情链接{% endblock %}
+{% extends "Template/new_style/Blog/base.html" %}
+{% block title %}博客主页{% endblock %}
 {% block main %}
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">名称</th>
-        <th scope="col">网址</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for link in link_list %}
-    <tr>
-        <th scope="row"> {{ forloop.counter }}</th>
-        <td>{{ link.title }}</td>
-        <td><a href="{{ link.href }}">{{ link.href }}</a></td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+{% for link in link_list %}
+<div class="card post" style="margin-bottom:40px!important;">
+    <div class="card-body">
+        <h3 class="hover"><a class="title-link" href="{{link.href}}" style="text-decoration: none;">{{ link.title }}</a></h3>
+    </div>
+</div>
+{% endfor %}
+{% if page_obj %}
+{% if page_obj.has_previous %}
+<a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+{% endif %}
+page {{ page_obj.number }} of {{paginator.num_pages }}.
+{% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}">下一页</a>
+{% endif %}
+{% endif %}
 {% endblock %}
